@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        <div class="row g-0">
+            
+            <!-- Left: Concert Image -->
+            <div class="col-md-5 d-none d-md-block bg-dark">
+                {% if ticket.concert.image %}
+                    <img src="{{ ticket.concert.image.url }}" class="img-fluid h-100 object-fit-cover" alt="{{ ticket.concert.title }}">
+                {% else %}
+                    <img src="{% static 'img/default_concert.jpg' %}" class="img-fluid h-100 object-fit-cover" alt="Concert Image">
+                {% endif %}
+            </div>
+
+            <!-- Right: Cancel Confirmation -->
+            <div class="col-md-7 bg-white text-dark d-flex align-items-center">
+                <div class="p-5">
+                    <h2 class="text-danger fw-bold mb-3">⚠️ Cancel Ticket?</h2>
+                    
+                    <p class="fs-5 mb-4">
+                        You’re about to cancel <strong>Ticket #{{ ticket.id }}</strong> for 
+                        <span class="text-primary fw-semibold">{{ ticket.concert.name }}</span>.
+                    </p>
+
+                    <ul class="list-unstyled mb-4">
+                        <li><i class="bi bi-calendar-event text-secondary me-2"></i><strong>Date:</strong> {{ ticket.concert.date_time }}</li>
+                        <li><i class="bi bi-geo-alt text-secondary me-2"></i><strong>Venue:</strong> {{ ticket.concert.venue }}</li>
+                    </ul>
+
+                    <div class="alert alert-warning small">
+                        We're sorry to see you go 😢. If you cancel, your spot will be released and cannot be recovered.
+                    </div>
+
+                    <form method="post" class="d-flex flex-wrap gap-3 mt-4">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-lg px-4 shadow-sm">
+                            <i class="bi bi-x-circle me-1"></i> Yes, Cancel
+                        </button>
+                        <a href="{% url 'my_bookings' %}" class="btn btn-outline-secondary btn-lg px-4 shadow-sm">
+                          <i class="bi bi-arrow-left me-1"></i> No, Keep It
+                       </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Icons (if not already included globally) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock %}

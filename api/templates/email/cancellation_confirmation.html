@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cancellation Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            color: #333;
+            padding: 20px;
+        }
+        .email-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        h2 {
+            color: #d9534f;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h2>❌ Ticket Cancellation Confirmed</h2>
+        <p>Hello {{ user.username }},</p>
+
+        <p>Your booking for the concert <strong>"{{ concert.name }}"</strong> has been successfully cancelled.</p>
+
+        <h4>🧾 Cancellation Details:</h4>
+        <ul>
+            <li><strong>Concert:</strong> {{ concert.name }}</li>
+            <li><strong>Date & Time:</strong> {{ concert.date_time }}</li>
+            <li><strong>Venue:</strong> {{ concert.venue }}</li>
+            <li><strong>Cancelled Quantity:</strong> {{ quantity }}</li>
+            <li><strong>Refunded Amount:</strong> ₹{{ refund_amount }}</li>
+        </ul>
+
+        <p>If this was a mistake, you can rebook from your dashboard.</p>
+
+        <p class="footer">
+            Regards,<br>
+            🎵 Concert Booking Team
+        </p>
+    </div>
+</body>
+</html>

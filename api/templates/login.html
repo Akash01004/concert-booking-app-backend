@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | Concert Booking</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/D%C3%BClmen%2C_D%C3%BClmener_Sommer%2C_Open-Air-Konzert%2C_%22Bounce%22_--_2018_--_0051.jpg/1920px-D%C3%BClmen%2C_D%C3%BClmener_Sommer%2C_Open-Air-Konzert%2C_%22Bounce%22_--_2018_--_0051.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(14px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .login-box h2 {
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+      color: #e0f7fa;
+    }
+
+    .form-control {
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .form-control:focus {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-color: #4dd0e1;
+      box-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
+    }
+
+    .form-label {
+      color: #f1f1f1;
+      font-weight: 500;
+    }
+
+    .input-group-text {
+      background-color: transparent;
+      border: none;
+      color: #4dd0e1;
+    }
+
+    .btn-primary {
+      background-color: #00e5ff;
+      border: none;
+      font-weight: 600;
+      transition: 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover {
+      background-color: #00bcd4;
+      transform: translateY(-1px);
+    }
+
+    a {
+      color: #bbdefb;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .alert {
+      font-size: 0.9rem;
+      padding: 8px 12px;
+      background-color: rgba(255, 0, 0, 0.1);
+      color: #ffcccc;
+      border: 1px solid #ff6666;
+    }
+
+    .text-center small {
+      color: #ddd;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-box">
+  <h2><i class="fas fa-music me-2"></i>Login</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert text-center">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="mb-3">
+      <label class="form-label">Username</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa fa-user"></i></span>
+        <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa fa-key"></i></span>
+        <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+      </div>
+    </div>
+
+    <div class="d-grid mt-4 mb-3">
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-sign-in-alt me-1"></i> Login
+      </button>
+    </div>
+
+    <p class="text-center small">
+      Don’t have an account? <a href="{% url 'register_page' %}">Register here</a>
+    </p>
+    <p class="text-center mt-2">
+      <a href="{% url 'home' %}">← Back to Home</a>
+    </p>
+  </form>
+</div>
+
+</body>
+</html>

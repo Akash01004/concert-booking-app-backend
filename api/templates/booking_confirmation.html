@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #00c9ff, #225638) fixed;
+        background-size: cover;
+    }
+
+    .confirmation-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(15px);
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        padding: 3rem;
+        color: #fff;
+    }
+
+    .ticket-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
+    }
+
+    .ticket-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .btn-gradient {
+        background: linear-gradient(135deg, #00ff99, #00ccff);
+        border: none;
+        border-radius: 30px;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .btn-outline-danger,
+    .btn-outline-primary {
+        border-radius: 30px;
+    }
+
+    h2, h3, h4, p, .btn {
+        text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .ticket-actions a {
+        font-size: 0.9rem;
+    }
+
+    .celebrate-emoji {
+        font-size: 2.5rem;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="confirmation-card text-center">
+        <div class="mb-4">
+            <div class="celebrate-emoji mb-2">🎉</div>
+            <h2 class="fw-bold text-light">Booking Confirmed!</h2>
+            <p class="lead text-light">You're all set — get ready for an unforgettable show!</p>
+        </div>
+
+        <div class="mb-5">
+            <h3 class="text-warning">🎤 {{ concert.name }}</h3>
+            <p><strong>📅 Date:</strong> {{ concert.date_time|date:"F j, Y, g:i A" }}</p>
+            <p><strong>📍 Venue:</strong> {{ concert.venue }}</p>
+        </div>
+
+        <div class="mt-5 d-flex justify-content-center flex-wrap gap-3">
+            <a href="{% url 'user_dashboard' %}" class="btn btn-outline-light btn-lg">
+                🏠 Go to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

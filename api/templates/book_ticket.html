@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #00c6ff, #19674a) fixed;
+        background-size: cover;
+    }
+
+    .vibrant-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        border-radius: 20px;
+        padding: 2rem;
+        color: #fff;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s ease;
+    }
+
+    .vibrant-card:hover {
+        transform: scale(1.01);
+    }
+
+    .ticket-form {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 1.5rem;
+        color: #fff;
+    }
+
+    .btn-gradient {
+        background: linear-gradient(to right, #00ff99, #00ccff);
+        border: none;
+        color: #000;
+        font-weight: 600;
+        padding: 0.7rem 1.5rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+    }
+
+    .btn-gradient:hover {
+        opacity: 0.9;
+    }
+
+    h2, h4, p, label {
+        color: #fff;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .btn-outline-light {
+        border-radius: 30px;
+        border-color: #fff;
+        color: #fff;
+    }
+
+    .btn-outline-light:hover {
+        background-color: #fff;
+        color: #2a8355;
+    }
+
+    .form-control {
+        border-radius: 10px;
+    }
+
+    .alert-danger {
+        background: rgba(255, 50, 50, 0.85);
+        color: #fff;
+        font-weight: 600;
+        border-radius: 12px;
+    }
+</style>
+
+<div class="container my-5">
+    <!-- Page Title -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">🎉 Book Tickets for <span style="color: #00ffcc;">{{ concert.name }}</span></h2>
+        <p class="lead">Experience the energy — book your spot now!</p>
+    </div>
+
+    <!-- Concert Details -->
+    <div class="vibrant-card mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <p><strong>📅 Date & Time:</strong> {{ concert.date_time }}</p>
+                <p><strong>📍 Venue:</strong> {{ concert.venue }}</p>
+                <p><strong>💸 Price per Ticket:</strong> ₹{{ concert.ticket_price }}</p>
+                <p><strong>📊 Already Booked:</strong> {{ already_booked }}</p>
+                <p><strong>✅ Remaining Slots:</strong> {{ remaining_slots }}</p>
+                <p><strong>🧍 Capacity:</strong> {{ available_capacity }}</p>
+            </div>
+            {% if concert.image %}
+            <div class="col-md-4 text-center">
+                <img src="{{ concert.image.url }}" class="img-fluid rounded-4 shadow" alt="Concert Image" style="max-height: 200px; object-fit: cover;">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Booking Form -->
+    {% if available_capacity > 0 %}
+    <div class="ticket-form">
+        <h4 class="mb-3">📝 Select Ticket Quantity</h4>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_quantity">Number of Tickets:</label>
+                {{ form.quantity }}
+                {% if form.quantity.errors %}
+                    <div class="text-danger small mt-1">{{ form.quantity.errors }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-gradient w-100">🎫 Book Now</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="alert alert-danger text-center mt-4">
+        <strong>❌ Sold Out!</strong> All tickets are booked for this concert.
+    </div>
+    {% endif %}
+
+    <!-- Back Button -->
+    <div class="text-center mt-4">
+        <a href="{% url 'user_dashboard' %}" class="btn btn-outline-light">
+            ← Back to Concerts
+        </a>
+    </div>
+</div>
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Page Title -->
+    <h1 class="text-center mb-4 text-success">🎶 Discover Upcoming Concerts</h1>
+
+    <!-- Loop through Concerts -->
+    <div class="row">
+        {% for concert in concerts %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-lg rounded-4 bg-light">
+                <!-- Concert Image -->
+                {% if concert.image %}
+                    <img src="{{ concert.image.url }}" class="card-img-top" alt="Concert image" style="max-height: 200px; object-fit: cover;">
+                {% endif %}
+
+                <div class="card-body">
+                    <!-- Concert Name & Date -->
+                    <h5 class="card-title text-primary">{{ concert.name }}</h5>
+                    <p class="card-text text-muted">
+                        <strong>Date:</strong> {{ concert.date_time }} <br>
+                        <strong>Venue:</strong> {{ concert.venue }} <br>
+                        <strong>Price:</strong> ₹{{ concert.ticket_price }} <br>
+                        <strong>Available Tickets:</strong> {{ concert.available_tickets }} 
+                    </p>
+
+                    <!-- Booking Section -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Show "Book Now" button only if tickets are available -->
+                        {% if concert.available_tickets > 0 %}
+                            <a href="{% url 'book_ticket' concert.id %}" class="btn btn-success btn-sm">Book Now</a>
+                        {% else %}
+                            <span class="badge bg-danger">Sold Out</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Ticket Booking for Authenticated Users -->
+    {% if request.user.is_authenticated %}
+        <div class="mt-4">
+            <form action="{% url 'book_ticket' concert.id %}" method="post">
+                {% csrf_token %}
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary btn-lg">🎟️ Book Ticket Now</button>
+                </div>
+            </form>
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center mt-4">
+            <p>🔐 <a href="{% url 'login' %}" class="btn btn-outline-success">Login</a> to book tickets and explore more concerts!</p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

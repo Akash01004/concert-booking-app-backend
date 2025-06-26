@@ -1,0 +1,12 @@
+Hi {{ user.username }},
+
+Thank you for booking your tickets for the concert "{{ concert.name }}".
+
+Booking Details:
+- Quantity: {{ quantity }}
+- Total Price: ₹{{ total_price }}
+
+If you have any questions, feel free to contact us.
+
+Thanks,
+Concert Booking Team

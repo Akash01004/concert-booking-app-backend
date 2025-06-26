@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register | Concert Booking</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, rgba(30, 60, 120, 0.7), rgba(42, 82, 152, 0.7)), 
+                  url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/D%C3%BClmen%2C_D%C3%BClmener_Sommer%2C_Open-Air-Konzert%2C_%22Bounce%22_--_2018_--_0051.jpg/1920px-D%C3%BClmen%2C_D%C3%BClmener_Sommer%2C_Open-Air-Konzert%2C_%22Bounce%22_--_2018_--_0051.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      height: 100vh;
+    }
+
+    .register-box {
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 80%;
+      min-height: 500px;
+    }
+
+    .register-box h2 {
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+      color: #00bcd4;
+      animation: glow 1.5s infinite alternate;
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 0 0 10px #00bcd4, 0 0 20px #00bcd4, 0 0 30px #00bcd4; }
+      100% { text-shadow: 0 0 20px #ff4081, 0 0 40px #ff4081, 0 0 60px #ff4081; }
+    }
+
+    .form-control {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 15px;
+      color: #fff;
+      padding-left: 40px;
+      width: 100%; /* Ensures the inputs fill the width of the container */
+    }
+
+    .form-control:focus {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: #4dd0e1;
+      box-shadow: 0 0 10px rgba(77, 208, 225, 0.7);
+    }
+
+    .form-label {
+      color: #f1f1f1;
+      font-weight: 500;
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group-text {
+      background-color: transparent;
+      border: none;
+      color: #00bcd4;
+      position: absolute;
+      left: 15px;
+      top: 12px;
+    }
+
+    .btn-primary {
+      background-color: #00e5ff;
+      border: none;
+      font-weight: 600;
+      border-radius: 30px;
+      transition: all 0.3s ease-in-out;
+      width: 100%;
+      padding: 12px;
+    }
+
+    .btn-primary:hover {
+      background-color: #0097a7;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(0, 188, 212, 0.5);
+    }
+
+    .password-strength {
+      font-size: 0.85rem;
+      margin-top: 5px;
+    }
+
+    a {
+      color: #00bcd4;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .text-center small {
+      color: #bbb;
+    }
+
+    .toggle-icon {
+      position: absolute;
+      right: 15px;
+      top: 38px;
+      cursor: pointer;
+      color: #fff;
+      transition: color 0.3s;
+    }
+
+    .toggle-icon:hover {
+      color: #00e5ff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="register-box">
+  <h2><i class="fas fa-music me-2"></i>Create Your Account</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    {% for field in form %}
+      <div class="mb-3 position-relative w-100">
+        <label class="form-label">{{ field.label }}</label>
+        <div class="input-group">
+          {% if field.name == 'username' %}
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          {% elif field.name == 'email' %}
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+          {% elif field.name == 'password1' or field.name == 'password' %}
+            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+          {% endif %}
+          {{ field }}
+        </div>
+
+        {% if field.name == "password1" or field.name == "password" %}
+          <i class="fa fa-eye-slash toggle-icon" onclick="togglePassword('{{ field.auto_id }}')" id="toggle_{{ field.auto_id }}"></i>
+        {% endif %}
+
+        {% if field.errors %}
+          <div class="text-danger small">{{ field.errors|striptags }}</div>
+        {% endif %}
+
+        {% if field.name == "password1" or field.name == "password" %}
+          <div id="strength_{{ field.auto_id }}" class="password-strength text-muted"></div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary">Register</button>
+    </div>
+  </form>
+
+  <p class="text-center mt-3">Already have an account? 
+    <a href="{% url 'login_page' %}">Login here</a>.
+  </p>
+  <p class="text-center mt-2">
+    <a href="{% url 'home' %}">← Back to Home</a>
+  </p>
+</div>
+
+<script>
+  function togglePassword(id) {
+    const input = document.getElementById(id);
+    const icon = document.getElementById('toggle_' + id);
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    } else {
+      input.type = 'password';
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    }
+  }
+
+  // Optional: Password strength feedback
+  document.querySelectorAll('input[type="password"]').forEach((field) => {
+    field.addEventListener('input', function () {
+      const strengthEl = document.getElementById('strength_' + this.id);
+      const val = this.value;
+      let strength = 'Weak';
+      let color = 'text-danger';
+      if (val.length > 8 && /[A-Z]/.test(val) && /\d/.test(val)) {
+        strength = 'Strong';
+        color = 'text-success';
+      } else if (val.length > 6) {
+        strength = 'Medium';
+        color = 'text-warning';
+      }
+      strengthEl.textContent = strength;
+      strengthEl.className = 'password-strength ' + color;
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+Hi {{ user.username }},
+
+We are sorry to inform you that your booking for the concert "{{ concert.name }}" has been cancelled.
+
+Cancellation Details:
+- Quantity: {{ quantity }}
+- Refunded Amount: ₹{{ refund_amount }}
+
+If this was a mistake, please contact us immediately.
+
+Thanks,
+Concert Booking Team

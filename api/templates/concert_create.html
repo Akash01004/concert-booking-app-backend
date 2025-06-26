@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    body {
+        background: linear-gradient(to right, #141e30, #243b55);
+        background-size: cover;
+        background-attachment: fixed;
+    }
+
+    .form-glass {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(12px);
+        border-radius: 20px;
+        padding: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        color: #fff;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #f8f9fa;
+    }
+
+    .form-control {
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+    }
+
+    .form-control:focus {
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 1px solid #0dcaf0;
+        color: #fff;
+        box-shadow: 0 0 0 0.2rem rgba(13, 202, 240, 0.25);
+    }
+
+    .btn-success {
+        background: linear-gradient(45deg, #00c853, #43a047);
+        border: none;
+    }
+
+    .btn-outline-secondary {
+        color: #fff;
+        border-color: #aaa;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: #555;
+        color: #fff;
+    }
+
+    .card-header h3 {
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .image-preview-container {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .image-preview-container img {
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        max-height: 200px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="form-glass animate__animated animate__fadeInUp">
+                <div class="text-center mb-4">
+                    <h3 class="text-warning"><i class="fas fa-music"></i> Create a New Concert</h3>
+                </div>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fa-solid fa-music"></i> Concert Name
+                        </label>
+                        <input type="text" name="name" class="form-control" placeholder="Concert Name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fa-solid fa-calendar-days"></i> Date and Time
+                        </label>
+                        <input type="datetime-local" name="date_time" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="fa-solid fa-location-dot"></i> Venue
+                        </label>
+                        <input type="text" name="venue" class="form-control" placeholder="e.g. Wembley Stadium" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label"><i class="fa-solid fa-indian-rupee-sign"></i> Ticket Price</label>
+                            <input type="number" name="ticket_price" step="0.01" class="form-control" placeholder="Enter the Amount" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label"><i class="fa-solid fa-ticket"></i> Available Tickets</label>
+                            <input type="number" name="available_tickets" class="form-control" placeholder="Enter No. of tickets" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fa-solid fa-image"></i> Concert Image</label>
+                        <input type="file" name="image" class="form-control" accept="image/*" onchange="previewImage(event)">
+                        <div class="image-preview-container">
+                            <img id="imagePreview" src="#" class="img-fluid d-none" alt="Image Preview">
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success px-4 py-2 shadow-sm">
+                            <i class="fa-solid fa-circle-check"></i> Create Concert
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center mt-4">
+                    <a href="{% url 'concert_list' %}" class="btn btn-outline-secondary">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Concert List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const output = document.getElementById('imagePreview');
+            output.src = reader.result;
+            output.classList.remove('d-none');
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+{% endblock %}
